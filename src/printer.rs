@@ -23,8 +23,18 @@ impl Printer {
     ///Add a list of u8 characters to be printed. 
     ///This is intended to mainly be used to print plaintext.
     ///It could however be used for commands as well.
-    pub fn add_text(&mut self, text: Vec<u8>) {
+    pub fn add(&mut self, text: Vec<u8>) {
         for i in text {
+            self.message.push(i);
+        }
+    }
+
+    ///Add a list of str to be printed. 
+    ///keep in mind that the printer only works on ASCII characters.
+    ///So it's the responsibility of the callee to make sure that the string is ASCII.
+    ///If not then it will most likely be malformed.
+    pub fn add_str(&mut self, text: &str) {
+        for i in text.bytes() {
             self.message.push(i);
         }
     }
