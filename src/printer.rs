@@ -40,6 +40,30 @@ impl Printer {
     }
 
 
+    ///This function will turn on or off double strike mode
+    ///This is done by giving either the value constants::ON or constants::OFF
+    pub fn set_double_strike(&mut self, value: u8) {
+        self.message.push(constants::ESC);
+        self.message.push(b'G');
+        if value == constants::ON {
+            self.message.push(constants::ON);
+        } else {
+            self.message.push(constants::OFF);
+        }
+    }
+
+    ///Call this to either turn on or off emphisized text.
+    ///This is done by giving either the value constants::ON or constants::OFF
+    pub fn set_emph(&mut self, value: u8) {
+        self.message.push(constants::ESC);
+        self.message.push(b'E');
+        if value == constants::ON {
+            self.message.push(constants::ON);
+        } else {
+            self.message.push(constants::OFF);
+        }
+    }
+
     pub fn cut(&mut self) {
         self.message.push(constants::LF);
         self.message.push(constants::GS);

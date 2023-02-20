@@ -22,7 +22,9 @@ pub const GS: u8 = 0x1D;
 ///FS character
 pub const FS: u8 = 0x1C;
 
-
+///Used for setting different values
+pub const ON: u8 = 0x01;
+pub const OFF: u8 = 0x00;
 
 ///Other basic characters
 ///At symbol '@'
