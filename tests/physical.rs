@@ -1,6 +1,6 @@
 use esc_pos_lib::printer;
 use esc_pos_lib::constants;
-
+use std::process::Command;
 
 #[test]
 #[ignore]
@@ -38,5 +38,14 @@ fn double_strike() {
 }
 
 
+#[test]
+#[ignore]
+fn print_fortune() {
+    let mut p = printer::Printer::new();
+    let fortune = Command::new("fortune").output().unwrap().stdout;
+    p.add(fortune);
+    p.cut();
+    p.print("192.168.0.157".to_string(), 9100).unwrap();
+}
 
 
