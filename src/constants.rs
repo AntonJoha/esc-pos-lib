@@ -26,6 +26,11 @@ pub const FS: u8 = 0x1C;
 pub const ON: u8 = 0x01;
 pub const OFF: u8 = 0x00;
 
+///Used for setting underline
+pub const SINGLE: u8 = 49;
+pub const DOUBLE: u8 = 50;
+
+
 ///Other basic characters
 ///At symbol '@'
 pub const AT: u8 = 0x40;
