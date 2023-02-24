@@ -76,7 +76,6 @@ impl Printer {
         }
     }
 
-
     ///Call this to either set underline text on or off
     ///This is done by giving either the value constants::SINGLE, constant::DOUBLE or constants::OFF
     pub fn set_underline(&mut self, value: u8) {

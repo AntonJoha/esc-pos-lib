@@ -150,6 +150,7 @@ fn mass_test() {
     //Upside down test
     upside_down(&mut p);
 
+
     p.cut();
 
     p.print("192.168.0.157".to_string(), 9100).unwrap();
