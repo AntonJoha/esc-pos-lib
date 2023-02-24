@@ -64,6 +64,40 @@ impl Printer {
         }
     }
 
+    ///Call this to either turn on or off upside down text
+    ///This is done by giving either the value constants::ON or constants::OFF
+    pub fn set_upside_down(&mut self, value: u8) {
+        self.message.push(constants::ESC);
+        self.message.push(b'{');
+        if value == constants::ON {
+            self.message.push(constants::ON);
+        } else {
+            self.message.push(constants::OFF);
+        }
+    }
+
+    ///Call this to either set underline text on or off
+    ///This is done by giving either the value constants::SINGLE, constant::DOUBLE or constants::OFF
+    pub fn set_underline(&mut self, value: u8) {
+        self.message.push(constants::ESC);
+        self.message.push(0x2D);
+        self.message.push(value);
+    }
+    
+    ///Call this to change the spacing between lines
+    ///This is done by giving a value between 0 and 255
+    pub fn set_line_spacing(&mut self, value: u8) {
+        self.message.push(constants::ESC);
+        self.message.push(0x33);
+        self.message.push(value);
+    }
+
+    ///Call this to set back to the default line spacing
+    pub fn set_default_line_spacing(&mut self) {
+        self.message.push(constants::ESC);
+        self.message.push(0x32);
+    }
+
     pub fn cut(&mut self) {
         self.message.push(constants::LF);
         self.message.push(constants::GS);
