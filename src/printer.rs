@@ -64,6 +64,29 @@ impl Printer {
         }
     }
 
+    ///Call this to turn smoothing on or off
+    ///This is done by giving either the value constants::ON or constants::OFF
+    pub fn set_smoothing(&mut self, value: u8) {
+        self.message.push(constants::GS);
+        self.message.push(0x62);
+        if value == constants::ON {
+            self.message.push(constants::ON);
+        } else {
+            self.message.push(constants::OFF);
+        }
+    }
+
+
+    ///Call this to reverse feed paper.
+    ///This is done by giving the number of lines to reverse feed.
+    ///The maximum number of lines is 255.
+    ///WARNING: I don't think this works on most printers
+    pub fn reverse_feed(&mut self, lines: u8) {
+        self.message.push(constants::ESC);
+        self.message.push(0x4b);
+        self.message.push(lines);
+    }
+
     ///Call this to either turn on or off upside down text
     ///This is done by giving either the value constants::ON or constants::OFF
     pub fn set_upside_down(&mut self, value: u8) {

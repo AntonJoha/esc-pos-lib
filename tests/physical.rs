@@ -119,6 +119,12 @@ fn upside_down(p: &mut printer::Printer) {
     p.set_upside_down(constants::OFF);
     p.add_str("This is not upside down. \n\n");
 }
+fn smoothing(p: &mut printer::Printer) {
+    p.set_smoothing(constants::ON);
+    p.add_str("This is with smoothing on. \n");
+    p.set_smoothing(constants::OFF);
+    p.add_str("This is with smoothing off. \n\n");
+}
 
 #[test]
 #[ignore]
@@ -150,6 +156,7 @@ fn mass_test() {
     //Upside down test
     upside_down(&mut p);
 
+    smoothing(&mut p);
 
     p.cut();
 
