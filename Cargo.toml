@@ -2,6 +2,10 @@
 name = "esc-pos-lib"
 version = "0.1.0"
 edition = "2021"
+license = "MIT"
+authors = ["Anton Johansson"]
+description = "A library for printing to ESC/POS compatible printers"
+repository = "https://github.com/AntonJoha/esc-pos-lib"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
