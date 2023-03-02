@@ -125,6 +125,24 @@ fn smoothing(p: &mut printer::Printer) {
     p.set_smoothing(constants::OFF);
     p.add_str("This is with smoothing off. \n\n");
 }
+fn barcode(p: &mut printer::Printer) {
+
+    p.add_barcode("12345678900", constants::UPC_A, constants::MODE_A);
+    
+    p.add_barcode("12345678900", constants::UPC_E, constants::MODE_A);
+
+    p.add_barcode("12345678900", constants::JAN13, constants::MODE_A);
+
+    p.add_barcode("1234567", constants::JAN8, constants::MODE_A);
+    
+    p.add_barcode("1234234324234234", constants::CODE39, constants::MODE_A);
+
+
+    p.add_barcode("12233453", constants::ITF, constants::MODE_A);
+
+    p.add_barcode("Hello 123", constants::CODABAR, constants::MODE_A);
+
+}
 
 #[test]
 #[ignore]
@@ -157,6 +175,8 @@ fn mass_test() {
     upside_down(&mut p);
 
     smoothing(&mut p);
+
+    barcode(&mut p);
 
     p.cut();
 
