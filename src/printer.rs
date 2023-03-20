@@ -1,5 +1,6 @@
 use super::constants;
 use super::network;
+use super::qr;
 
 pub struct Printer {
     message: Vec<u8>,
@@ -27,6 +28,13 @@ impl Printer {
         for i in text {
             self.message.push(i);
         }
+    }
+
+
+    ///Prints the given qr code. 
+    ///The qr code is to be constructed with the qr submodule..
+    pub fn add_qr(&mut self, qr: qr::Qr) {
+        self.add(qr.export());
     }
 
     ///Add a list of str to be printed. 

@@ -1,6 +1,7 @@
 use esc_pos_lib::printer;
 use esc_pos_lib::constants;
 use std::process::Command;
+use esc_pos_lib::qr;
 
 /*
 
@@ -182,6 +183,24 @@ fn barcode_dimensions() {
     p.add_str("This is a barcode with width set to 6. \n");
     p.set_barcode_width(6);
     p.add_barcode("12345678900", constants::UPC_A, constants::MODE_A);
+    p.cut();
+    p.print("192.168.0.157".to_string(), 9100).unwrap();
+}
+
+
+#[test]
+#[ignore]
+fn qr_code_test() {
+    
+    let mut p = printer::Printer::new();
+    let msg: Vec<u8> = "Helliuhawdhwdhawidhiawhdiawdhiawhdiawhdiawhdiuwahdiawhdihawidhawiudhawidhawidhiawdhiawhdiawhdiawhdo World".to_string().into_bytes();
+    let mut qr = qr::Qr::new(msg);
+
+    qr.set_size(10);
+    qr.set_error_correction(constants::ERROR_M);
+    qr.set_model(constants::QR_MODEL_MICRO);
+
+    p.add(qr.export());
     p.cut();
     p.print("192.168.0.157".to_string(), 9100).unwrap();
 }
