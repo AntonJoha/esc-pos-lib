@@ -58,3 +58,15 @@ pub const DATABAR_LIMITED: u8 = 0x0C;
 pub const DATABAR_EXPANDED: u8 = 0x0D;
 pub const CODE128_AUTO: u8 = 0x0E;
 
+
+///QR related constants
+pub const QR_MODEL_1: u8 = 49;
+pub const QR_MODEL_2: u8 = 50;
+///Micro QR only works on TM-L90 4** models
+pub const QR_MODEL_MICRO: u8 = 51;
+///Different percentage of error correction
+///L: 7% M: 15% Q: 25% H: 30%
+pub const ERROR_L: u8 = 48;
+pub const ERROR_M: u8 = 49;
+pub const ERROR_Q: u8 = 50;
+pub const ERROR_H: u8 = 51;
