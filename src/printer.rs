@@ -77,6 +77,68 @@ impl Printer {
     }
 
 
+    fn _barcode_mode_a(&mut self, text:&str, barcode_type: u8) {
+        self.message.push(constants::GS);
+        self.message.push(0x6b);
+        self.message.push(barcode_type);
+        for i in text.bytes() {
+            self.message.push(i);
+        }
+        self.message.push(0x00);
+    }
+
+    fn _barcode_mode_b(&mut self, text:&str, barcode_type: u8) {
+        self.message.push(constants::GS);
+        self.message.push(0x6b);
+        self.message.push(barcode_type + 65);
+        self.message.push(text.len() as u8);
+        for i in text.bytes() {
+            self.message.push(i);
+        }
+    }
+
+
+    ///This function will set the height of the barcode.
+    ///The actual height depends on the printer, try and find what works for you.
+    ///Can be given values between 0-255
+    pub fn set_barcode_height(&mut self, height: u8) {
+        self.message.push(constants::GS);
+        self.message.push(0x68);
+        self.message.push(height);
+    }
+
+    ///This function will set the width of the barcode
+    ///The actual width depends on the printer, try and find what works for you.
+    ///Can be given values between 2-6
+    ///Not sure why this is the case, but it is. 
+    ///Will set to either highest or lowest if out of range.
+    pub fn set_barcode_width(&mut self, mut width: u8) {
+        if width >6 {
+            width = 6;
+        }
+        else if width < 2 {
+            width = 2;
+        }
+        self.message.push(constants::GS);
+        self.message.push(0x77);
+        self.message.push(width);
+    }
+
+    ///Prints a given barcode
+    ///The barcode to print is given as a str
+    ///There can be different types of barcodes. Check which you want to print https://reference.epson-biz.com/modules/ref_escpos/index.php?content_id=128
+    ///There are two kinds of ways to print barcode, either constant::MODE_A or constant::MODE_B
+    ///You have to know which mode is right for you.
+    pub fn add_barcode(&mut self, text: &str, barcode_type: u8, mode: u8) {
+        
+        if mode == constants::MODE_A {
+            self._barcode_mode_a(text, barcode_type);
+        }
+        else {
+            self._barcode_mode_b( text, barcode_type);
+        }
+    }
+
     ///Call this to reverse feed paper.
     ///This is done by giving the number of lines to reverse feed.
     ///The maximum number of lines is 255.

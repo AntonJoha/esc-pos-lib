@@ -34,3 +34,27 @@ pub const DOUBLE: u8 = 50;
 ///Other basic characters
 ///At symbol '@'
 pub const AT: u8 = 0x40;
+
+
+///Different modes
+pub const MODE_A: u8 = 0x01;
+pub const MODE_B: u8 = 0x00;
+
+
+///Different barcode types
+pub const UPC_A: u8 = 0x00;
+pub const UPC_E: u8 = 0x01;
+pub const JAN13: u8 = 0x02;
+pub const JAN8: u8 = 0x03;
+pub const CODE39: u8 = 0x04;
+pub const ITF: u8 = 0x05;
+pub const CODABAR: u8 = 0x06;
+pub const CODE93: u8 = 0x07;
+pub const CODE128: u8 = 0x08;
+pub const GS1_128: u8 = 0x09;
+pub const DATABAR_OMNIDIRECTIONAL: u8 = 0x0A;
+pub const DATABAR_TRUNCATED: u8 = 0x0B;
+pub const DATABAR_LIMITED: u8 = 0x0C;
+pub const DATABAR_EXPANDED: u8 = 0x0D;
+pub const CODE128_AUTO: u8 = 0x0E;
+

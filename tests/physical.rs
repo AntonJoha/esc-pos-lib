@@ -126,6 +126,66 @@ fn smoothing(p: &mut printer::Printer) {
     p.add_str("This is with smoothing off. \n\n");
 }
 
+
+#[test]
+#[ignore]
+fn barcode() {
+    
+    let mut p = printer::Printer::new();
+    p.add_barcode("12345678900", constants::UPC_A, constants::MODE_A);
+    p.cut();
+    p.print("192.168.0.157".to_string(), 9100).unwrap();
+
+    p = printer::Printer::new();
+    p.add_barcode("12345678900", constants::UPC_E, constants::MODE_A);
+    p.cut();
+    p.print("192.168.0.157".to_string(), 9100).unwrap();
+
+    p = printer::Printer::new();
+    p.add_barcode("12345678900", constants::JAN13, constants::MODE_A);
+    p.cut();
+    p.print("192.168.0.157".to_string(), 9100).unwrap();
+
+    p = printer::Printer::new();
+    p.add_barcode("1234567", constants::JAN8, constants::MODE_A);
+    p.cut();
+    p.print("192.168.0.157".to_string(), 9100).unwrap();
+
+    p = printer::Printer::new();
+    p.add_barcode("1234234324234234", constants::CODE39, constants::MODE_A);
+    p.cut();
+    p.print("192.168.0.157".to_string(), 9100).unwrap();
+
+    p = printer::Printer::new();
+    p.add_barcode("12233453", constants::ITF, constants::MODE_A);
+    p.cut();
+    p.print("192.168.0.157".to_string(), 9100).unwrap();
+
+    p = printer::Printer::new();
+    p.add_barcode("Hello 123", constants::CODABAR, constants::MODE_A);
+    p.cut();
+    p.print("192.168.0.157".to_string(), 9100).unwrap();
+}
+
+#[test]
+#[ignore]
+fn barcode_dimensions() {
+    let mut p = printer::Printer::new();
+    p.add_str("This is a barcode with the default dimensions. \n");
+    p.add_barcode("12345678900", constants::UPC_A, constants::MODE_A);
+    p.add_str("This is a barcode with the height set to 100. \n");
+    p.set_barcode_height(100);
+    p.add_barcode("12345678900", constants::UPC_A, constants::MODE_A);
+    p.add_str("This is a barcode with width set to 2. \n");
+    p.set_barcode_width(2);
+    p.add_barcode("12345678900", constants::UPC_A, constants::MODE_A);
+    p.add_str("This is a barcode with width set to 6. \n");
+    p.set_barcode_width(6);
+    p.add_barcode("12345678900", constants::UPC_A, constants::MODE_A);
+    p.cut();
+    p.print("192.168.0.157".to_string(), 9100).unwrap();
+}
+
 #[test]
 #[ignore]
 fn mass_test() {
@@ -157,6 +217,9 @@ fn mass_test() {
     upside_down(&mut p);
 
     smoothing(&mut p);
+    
+    //Barcode can't be tested with everything else as every barcode is not supported on every system
+    //barcode(&mut p);
 
     p.cut();
 
