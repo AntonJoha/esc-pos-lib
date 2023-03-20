@@ -169,6 +169,25 @@ fn barcode() {
 
 #[test]
 #[ignore]
+fn barcode_dimensions() {
+    let mut p = printer::Printer::new();
+    p.add_str("This is a barcode with the default dimensions. \n");
+    p.add_barcode("12345678900", constants::UPC_A, constants::MODE_A);
+    p.add_str("This is a barcode with the height set to 100. \n");
+    p.set_barcode_height(100);
+    p.add_barcode("12345678900", constants::UPC_A, constants::MODE_A);
+    p.add_str("This is a barcode with width set to 2. \n");
+    p.set_barcode_width(2);
+    p.add_barcode("12345678900", constants::UPC_A, constants::MODE_A);
+    p.add_str("This is a barcode with width set to 6. \n");
+    p.set_barcode_width(6);
+    p.add_barcode("12345678900", constants::UPC_A, constants::MODE_A);
+    p.cut();
+    p.print("192.168.0.157".to_string(), 9100).unwrap();
+}
+
+#[test]
+#[ignore]
 fn mass_test() {
     let mut p = printer::Printer::new();
 

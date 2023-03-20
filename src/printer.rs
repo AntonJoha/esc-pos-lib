@@ -97,6 +97,33 @@ impl Printer {
         }
     }
 
+
+    ///This function will set the height of the barcode.
+    ///The actual height depends on the printer, try and find what works for you.
+    ///Can be given values between 0-255
+    pub fn set_barcode_height(&mut self, height: u8) {
+        self.message.push(constants::GS);
+        self.message.push(0x68);
+        self.message.push(height);
+    }
+
+    ///This function will set the width of the barcode
+    ///The actual width depends on the printer, try and find what works for you.
+    ///Can be given values between 2-6
+    ///Not sure why this is the case, but it is. 
+    ///Will set to either highest or lowest if out of range.
+    pub fn set_barcode_width(&mut self, mut width: u8) {
+        if width >6 {
+            width = 6;
+        }
+        else if width < 2 {
+            width = 2;
+        }
+        self.message.push(constants::GS);
+        self.message.push(0x77);
+        self.message.push(width);
+    }
+
     ///Prints a given barcode
     ///The barcode to print is given as a str
     ///There can be different types of barcodes. Check which you want to print https://reference.epson-biz.com/modules/ref_escpos/index.php?content_id=128
