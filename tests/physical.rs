@@ -2,7 +2,7 @@ use esc_pos_lib::printer;
 use esc_pos_lib::constants;
 use std::process::Command;
 use esc_pos_lib::qr;
-
+use esc_pos_lib::image;
 /*
 
 #[test]
@@ -204,6 +204,20 @@ fn qr_code_test() {
     p.cut();
     p.print("192.168.0.157".to_string(), 9100).unwrap();
 }
+
+
+#[test]
+fn image() {
+    
+    let mut p = printer::Printer::new();
+    let data : Vec<bool> = vec![true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false];
+    let mut img = image::Image::new( 4, 4, data);
+    p.add(img.export());
+    p.add_str("AWIHUDAWHIDAWIHUD");
+    p.cut();
+    p.print("192.168.0.157".to_string(), 9100).unwrap();
+}
+
 
 #[test]
 #[ignore]
