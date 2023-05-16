@@ -127,7 +127,6 @@ fn smoothing(p: &mut printer::Printer) {
     p.add_str("This is with smoothing off. \n\n");
 }
 
-
 #[test]
 #[ignore]
 fn barcode() {
@@ -137,35 +136,6 @@ fn barcode() {
     p.cut();
     p.print("192.168.0.157".to_string(), 9100).unwrap();
 
-    p = printer::Printer::new();
-    p.add_barcode("12345678900", constants::UPC_E, constants::MODE_A);
-    p.cut();
-    p.print("192.168.0.157".to_string(), 9100).unwrap();
-
-    p = printer::Printer::new();
-    p.add_barcode("12345678900", constants::JAN13, constants::MODE_A);
-    p.cut();
-    p.print("192.168.0.157".to_string(), 9100).unwrap();
-
-    p = printer::Printer::new();
-    p.add_barcode("1234567", constants::JAN8, constants::MODE_A);
-    p.cut();
-    p.print("192.168.0.157".to_string(), 9100).unwrap();
-
-    p = printer::Printer::new();
-    p.add_barcode("1234234324234234", constants::CODE39, constants::MODE_A);
-    p.cut();
-    p.print("192.168.0.157".to_string(), 9100).unwrap();
-
-    p = printer::Printer::new();
-    p.add_barcode("12233453", constants::ITF, constants::MODE_A);
-    p.cut();
-    p.print("192.168.0.157".to_string(), 9100).unwrap();
-
-    p = printer::Printer::new();
-    p.add_barcode("Hello 123", constants::CODABAR, constants::MODE_A);
-    p.cut();
-    p.print("192.168.0.157".to_string(), 9100).unwrap();
 }
 
 #[test]

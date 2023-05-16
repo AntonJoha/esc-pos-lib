@@ -19,19 +19,23 @@ impl Image {
 
     pub fn export(&self ) -> Vec<u8> {
         let mut to_return = Vec::new();
-        to_return.push(constants::ESC);
-        to_return.push(0x2A);
-        to_return.push(33);
-        to_return.push(self.width as u8);
-        to_return.push(self.height as u8);
-        for i in 0..self.pixels.len() {
-            if self.pixels[i] {
-                to_return.push(0x01);
-            } else {
-                to_return.push(0x00);
-            }
-        }
-        to_return.push('\n' as u8);
+        to_return.push(constants::GS); //GS
+        to_return.push(0x28); // (
+        to_return.push(0x4C); // L
+        to_return.push(self.width as u8); // pL
+        to_return.push(self.height as u8); // pH
+        to_return.push(0x30); // m
+        to_return.push(0x70); // fn
+        to_return.push(48); // a
+        to_return.push(1); // bx
+        to_return.push(1); // by
+        to_return.push(49); // c
+        to_return.push(1);// xL
+                            // xH
+                            // yL
+                            // yH
+        
+        panic!("Not implemented yet");
         to_return
     }
 }
