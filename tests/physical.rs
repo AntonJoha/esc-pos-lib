@@ -2,7 +2,7 @@ use esc_pos_lib::printer;
 use esc_pos_lib::constants;
 use std::process::Command;
 use esc_pos_lib::qr;
-
+use esc_pos_lib::image;
 /*
 
 #[test]
@@ -127,7 +127,6 @@ fn smoothing(p: &mut printer::Printer) {
     p.add_str("This is with smoothing off. \n\n");
 }
 
-
 #[test]
 #[ignore]
 fn barcode() {
@@ -137,35 +136,6 @@ fn barcode() {
     p.cut();
     p.print("192.168.0.157".to_string(), 9100).unwrap();
 
-    p = printer::Printer::new();
-    p.add_barcode("12345678900", constants::UPC_E, constants::MODE_A);
-    p.cut();
-    p.print("192.168.0.157".to_string(), 9100).unwrap();
-
-    p = printer::Printer::new();
-    p.add_barcode("12345678900", constants::JAN13, constants::MODE_A);
-    p.cut();
-    p.print("192.168.0.157".to_string(), 9100).unwrap();
-
-    p = printer::Printer::new();
-    p.add_barcode("1234567", constants::JAN8, constants::MODE_A);
-    p.cut();
-    p.print("192.168.0.157".to_string(), 9100).unwrap();
-
-    p = printer::Printer::new();
-    p.add_barcode("1234234324234234", constants::CODE39, constants::MODE_A);
-    p.cut();
-    p.print("192.168.0.157".to_string(), 9100).unwrap();
-
-    p = printer::Printer::new();
-    p.add_barcode("12233453", constants::ITF, constants::MODE_A);
-    p.cut();
-    p.print("192.168.0.157".to_string(), 9100).unwrap();
-
-    p = printer::Printer::new();
-    p.add_barcode("Hello 123", constants::CODABAR, constants::MODE_A);
-    p.cut();
-    p.print("192.168.0.157".to_string(), 9100).unwrap();
 }
 
 #[test]
@@ -204,6 +174,25 @@ fn qr_code_test() {
     p.cut();
     p.print("192.168.0.157".to_string(), 9100).unwrap();
 }
+
+
+#[test]
+#[ignore]
+fn image() {
+    
+    let mut p = printer::Printer::new();
+    let mut data: Vec<bool> = vec![true; 1024*120];
+    for i in 0..data.len() {
+        if i % 2 == 0 {
+            data[i] = false;
+        }
+    }
+    let mut img = image::Image::new( 1024, 120, data).unwrap();
+    p.add(img.export());
+    p.cut();
+    p.print("192.168.0.157".to_string(), 9100).unwrap();
+}
+
 
 #[test]
 #[ignore]
