@@ -177,13 +177,17 @@ fn qr_code_test() {
 
 
 #[test]
+#[ignore]
 fn image() {
     
     let mut p = printer::Printer::new();
-    let data : Vec<bool> = vec![true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false,
-        true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false,
-        true, false, true, false, true, false, true, false, true, false, true, false, true, false, true, false];
-    let mut img = image::Image::new( 4, 12, data);
+    let mut data: Vec<bool> = vec![true; 1024*120];
+    for i in 0..data.len() {
+        if i % 2 == 0 {
+            data[i] = false;
+        }
+    }
+    let mut img = image::Image::new( 1024, 120, data).unwrap();
     p.add(img.export());
     p.cut();
     p.print("192.168.0.157".to_string(), 9100).unwrap();

@@ -70,3 +70,6 @@ pub const ERROR_L: u8 = 48;
 pub const ERROR_M: u8 = 49;
 pub const ERROR_Q: u8 = 50;
 pub const ERROR_H: u8 = 51;
+
+
+pub const MAX_X_WIDTH: u32 = 1024;
