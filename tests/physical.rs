@@ -195,6 +195,16 @@ fn image() {
 
 
 #[test]
+fn picture() {
+    let mut p = printer::Printer::new();
+    let img = image::image_from_file("test_image.jpg").unwrap();
+
+    p.add(img.export());
+    p.cut();
+    p.print("192.168.0.157".to_string(), 9100).unwrap();
+}
+
+#[test]
 #[ignore]
 fn mass_test() {
     let mut p = printer::Printer::new();

@@ -1,4 +1,6 @@
 use super::constants;
+use image::imageops;
+use image::GrayImage;
 
 pub struct Image {
     width: u32,
@@ -6,6 +8,46 @@ pub struct Image {
     pixels: Vec<bool>,
 }
 
+
+fn dithered_buffer(path: &str) ->
+    Result<GrayImage, String> {
+
+    let img = match image::open(path) {
+        Ok(img) => img,
+        Err(_) => return Err(String::from("Could not open image")),
+    };
+    let img = img.resize(constants::MAX_X_WIDTH, std::u32::MAX, imageops::FilterType::Nearest);
+
+    let mut buffer = img.into_luma8();
+    imageops::dither(&mut buffer, &image::imageops::colorops::BiLevel);
+    
+    return Ok(buffer);
+}
+
+fn buffer_to_bool_vec(buffer: &GrayImage) -> Vec<bool> {
+    let mut vec: Vec<bool> = Vec::new();
+    for pixel in buffer.pixels() {
+        vec.push(pixel[0] == 0);
+    }
+    return vec;
+}
+
+pub fn image_from_file(path: &str) -> Result<Image, String> {
+    
+    let buffer = match dithered_buffer(path) {
+        Ok(buffer) => buffer,
+        Err(err) => return Err(err),
+    };
+
+    let (width, height) = buffer.dimensions();
+    let pixels: Vec<bool> = buffer_to_bool_vec(&buffer);
+
+    return Ok(Image {
+        width,
+        height,
+        pixels,
+    });
+}
 
 impl Image {
 
