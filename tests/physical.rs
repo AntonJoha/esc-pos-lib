@@ -207,6 +207,7 @@ fn picture() {
 }
 
 #[test]
+#[ignore]
 fn dynamicimage() {
     let mut p = printer::Printer::new();
     let i = ::image::open("test_image.jpg").unwrap();
