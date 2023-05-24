@@ -1,4 +1,7 @@
 use super::constants;
+use image::imageops;
+use image::GrayImage;
+use image::DynamicImage;
 
 pub struct Image {
     width: u32,
@@ -6,6 +9,56 @@ pub struct Image {
     pixels: Vec<bool>,
 }
 
+fn resize_image(img: &DynamicImage) -> DynamicImage {
+    img.resize(constants::MAX_X_WIDTH, std::u32::MAX, imageops::FilterType::Nearest)
+}
+
+fn get_image(path: &str) ->
+    Result<DynamicImage, String> {
+    return match image::open(path) {
+        Ok(img) => Ok(img),
+        Err(_) => Err(String::from("Could not open image")),
+    }
+}
+
+fn buffer_to_bool_vec(buffer: &GrayImage) -> Vec<bool> {
+    let mut vec: Vec<bool> = Vec::new();
+    for pixel in buffer.pixels() {
+        vec.push(pixel[0] == 0);
+    }
+    return vec;
+}
+
+/// Create a new Image object from a DynamicImage in the image crate
+pub fn image_from_dynamic(buffer: &image::DynamicImage) -> Result<Image, String> {
+
+    let mut buffer = resize_image(buffer).into_luma8();
+    imageops::dither(&mut buffer, &image::imageops::colorops::BiLevel);
+
+    let vec = buffer_to_bool_vec(&buffer);
+
+    return match Image::new(buffer.width(), buffer.height(), vec) {
+        Ok(img) => Ok(img),
+        Err(_) => Err("Could not create image from buffer".to_string()),
+    }
+}
+
+///Give a path to an image and get an Image object back
+///It's based on the crate image in rust. 
+///Filetype is checked by parsing the file extension
+///If they mismatch then an error will be thrown so be aware
+pub fn image_from_path(path: &str) -> Result<Image, String> {
+    
+    let img = match get_image(path) {
+        Ok(img) => img,
+        Err(err) => return Err(err),
+    };
+
+    match image_from_dynamic(&img) {
+        Ok(e) => return Ok(e),
+        Err(err) => return Err(err),
+    }
+}
 
 impl Image {
 
