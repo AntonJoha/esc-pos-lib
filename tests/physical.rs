@@ -3,6 +3,7 @@ use esc_pos_lib::constants;
 use std::process::Command;
 use esc_pos_lib::qr;
 use esc_pos_lib::image;
+use ::image::DynamicImage;
 /*
 
 #[test]
@@ -195,10 +196,21 @@ fn image() {
 
 
 #[test]
+#[ignore]
 fn picture() {
     let mut p = printer::Printer::new();
-    let img = image::image_from_file("test_image.jpg").unwrap();
+    let img = image::image_from_path("test_image.jpg").unwrap();
 
+    p.add(img.export());
+    p.cut();
+    p.print("192.168.0.157".to_string(), 9100).unwrap();
+}
+
+#[test]
+fn dynamicimage() {
+    let mut p = printer::Printer::new();
+    let i = ::image::open("test_image.jpg").unwrap();
+    let img = image::image_from_dynamic(&i).unwrap();
     p.add(img.export());
     p.cut();
     p.print("192.168.0.157".to_string(), 9100).unwrap();
