@@ -10,7 +10,7 @@ pub struct Image {
 }
 
 fn resize_image(img: &DynamicImage) -> DynamicImage {
-    img.resize(constants::MAX_X_WIDTH, std::u32::MAX, imageops::FilterType::Nearest)
+    img.resize(constants::MAX_X_WIDTH/2 + constants::MAX_X_WIDTH/16, std::u32::MAX, imageops::FilterType::Nearest)
 }
 
 fn get_image(path: &str) ->
