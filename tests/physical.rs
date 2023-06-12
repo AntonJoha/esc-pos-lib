@@ -219,6 +219,28 @@ fn dynamicimage() {
 
 #[test]
 #[ignore]
+fn to_file(){
+    let mut p = printer::Printer::new();
+    let i = ::image::open("test_image.jpg").unwrap();
+    let img = image::image_from_dynamic(&i).unwrap();
+    p.add(img.export());
+    p.cut();
+    p.print_file("test_file.prn");
+}
+
+#[test]
+#[ignore]
+fn to_stdout(){
+    let mut p = printer::Printer::new();
+    let i = ::image::open("test_image.jpg").unwrap();
+    let img = image::image_from_dynamic(&i).unwrap();
+    p.add(img.export());
+    p.cut();
+    p.print_stdout();
+}
+
+#[test]
+#[ignore]
 fn mass_test() {
     let mut p = printer::Printer::new();
 

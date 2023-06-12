@@ -1,6 +1,8 @@
 use super::constants;
 use super::network;
 use super::qr;
+use std::fs::File;
+use std::io::Write;
 
 pub struct Printer {
     message: Vec<u8>,
@@ -198,6 +200,23 @@ impl Printer {
         self.message.push(0x41);
         self.message.push(0x08);
         self.message.push(constants::LF);
+    }
+
+    ///Prints the message straight to stdout
+    pub fn print_stdout(&self) {
+        for i in &self.message {
+            print!("{}", *i as char);
+        }
+    }
+
+
+    ///Prints the message to a file
+    ///The path is given as a str
+    pub fn print_file(&self, path: &str) {
+        let mut file = File::create(path).unwrap();
+        for i in &self.message {
+            file.write(&[*i]).unwrap();
+        }
     }
 
     ///Sends a printjob to the correct address and port.
