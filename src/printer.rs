@@ -193,6 +193,143 @@ impl Printer {
         self.message.push(0x32);
     }
 
+    ///Call this to set text alignment.
+    ///Use constants::ALIGN_LEFT, constants::ALIGN_CENTER, or constants::ALIGN_RIGHT.
+    ///Values greater than ALIGN_RIGHT are clamped to ALIGN_RIGHT.
+    ///Default alignment is left.
+    pub fn set_alignment(&mut self, mut value: u8) {
+        if value > constants::ALIGN_RIGHT {
+            value = constants::ALIGN_RIGHT;
+        }
+        self.message.push(constants::ESC);
+        self.message.push(0x61);
+        self.message.push(value);
+    }
+
+    ///Call this to select the character font.
+    ///Use constants::FONT_A or constants::FONT_B.
+    ///Font A is the default larger font; Font B is the smaller font.
+    ///Values greater than FONT_B are clamped to FONT_B.
+    pub fn set_font(&mut self, mut value: u8) {
+        if value > constants::FONT_B {
+            value = constants::FONT_B;
+        }
+        self.message.push(constants::ESC);
+        self.message.push(0x4D);
+        self.message.push(value);
+    }
+
+    ///Call this to set the character size (width and height multipliers).
+    ///width_multiplier and height_multiplier can each be between 1 and 8.
+    ///Values outside this range are clamped to 1 or 8.
+    ///A multiplier of 1 means normal size; 2 means double size, etc.
+    pub fn set_character_size(&mut self, mut width_multiplier: u8, mut height_multiplier: u8) {
+        if width_multiplier < 1 { width_multiplier = 1; }
+        if width_multiplier > 8 { width_multiplier = 8; }
+        if height_multiplier < 1 { height_multiplier = 1; }
+        if height_multiplier > 8 { height_multiplier = 8; }
+        let n = ((width_multiplier - 1) << 4) | (height_multiplier - 1);
+        self.message.push(constants::GS);
+        self.message.push(0x21);
+        self.message.push(n);
+    }
+
+    ///Call this to set extra space added to the right of each character.
+    ///Value can be between 0 and 255 (in dots).
+    ///Default is 0.
+    pub fn set_character_spacing(&mut self, value: u8) {
+        self.message.push(constants::ESC);
+        self.message.push(0x20);
+        self.message.push(value);
+    }
+
+    ///Call this to set horizontal tab stop positions.
+    ///Each value in the slice is a column number (1–255) for a tab stop.
+    ///The positions must be given in ascending order.
+    ///Pass an empty slice to clear all tab stops.
+    pub fn set_tab_positions(&mut self, positions: &[u8]) {
+        self.message.push(constants::ESC);
+        self.message.push(0x44);
+        for &pos in positions {
+            self.message.push(pos);
+        }
+        self.message.push(0x00);
+    }
+
+    ///Call this to feed n lines.
+    ///This is equivalent to printing n newlines without printing any data.
+    pub fn feed(&mut self, lines: u8) {
+        self.message.push(constants::ESC);
+        self.message.push(0x64);
+        self.message.push(lines);
+    }
+
+    ///Call this to set the position of the HRI (Human Readable Interpretation) characters
+    ///relative to the barcode.
+    ///Use constants::HRI_NONE, HRI_ABOVE, HRI_BELOW, or HRI_ABOVE_BELOW.
+    ///Values greater than HRI_ABOVE_BELOW are clamped to HRI_ABOVE_BELOW.
+    pub fn set_barcode_hri_position(&mut self, mut value: u8) {
+        if value > constants::HRI_ABOVE_BELOW {
+            value = constants::HRI_ABOVE_BELOW;
+        }
+        self.message.push(constants::GS);
+        self.message.push(0x48);
+        self.message.push(value);
+    }
+
+    ///Call this to select the font used for barcode HRI characters.
+    ///Use constants::FONT_A or constants::FONT_B.
+    ///Values greater than FONT_B are clamped to FONT_B.
+    pub fn set_barcode_hri_font(&mut self, mut value: u8) {
+        if value > constants::FONT_B {
+            value = constants::FONT_B;
+        }
+        self.message.push(constants::GS);
+        self.message.push(0x66);
+        self.message.push(value);
+    }
+
+    ///Call this to perform a partial cut (leaves a small uncut section).
+    ///Use cut() for a full cut.
+    pub fn partial_cut(&mut self) {
+        self.message.push(constants::LF);
+        self.message.push(constants::GS);
+        self.message.push(0x56);
+        self.message.push(0x42);
+        self.message.push(0x01);
+    }
+
+    ///Call this to turn 90-degree clockwise rotation on or off.
+    ///Use constants::ROTATION_OFF or constants::ROTATION_90.
+    ///Values greater than ROTATION_90 are clamped to ROTATION_90.
+    pub fn set_rotation(&mut self, mut value: u8) {
+        if value > constants::ROTATION_90 {
+            value = constants::ROTATION_90;
+        }
+        self.message.push(constants::ESC);
+        self.message.push(0x56);
+        self.message.push(value);
+    }
+
+    ///Call this to set the left margin.
+    ///The margin is specified in dots (0–65535).
+    ///This command is only effective at the beginning of a line.
+    pub fn set_left_margin(&mut self, margin: u16) {
+        self.message.push(constants::GS);
+        self.message.push(0x4C);
+        self.message.push((margin & 0xFF) as u8);
+        self.message.push((margin >> 8) as u8);
+    }
+
+    ///Call this to set the print area width in dots (0–65535).
+    ///This command is only effective at the beginning of a line.
+    pub fn set_print_area_width(&mut self, width: u16) {
+        self.message.push(constants::GS);
+        self.message.push(0x57);
+        self.message.push((width & 0xFF) as u8);
+        self.message.push((width >> 8) as u8);
+    }
+
     pub fn cut(&mut self) {
         self.message.push(constants::LF);
         self.message.push(constants::GS);
@@ -200,6 +337,12 @@ impl Printer {
         self.message.push(0x41);
         self.message.push(0x08);
         self.message.push(constants::LF);
+    }
+
+    ///Returns the raw byte buffer that will be sent to the printer.
+    ///Useful for testing or inspecting the command sequence.
+    pub fn get_bytes(&self) -> &[u8] {
+        &self.message
     }
 
     ///Prints the message straight to stdout

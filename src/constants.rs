@@ -41,6 +41,40 @@ pub const MODE_A: u8 = 0x01;
 pub const MODE_B: u8 = 0x00;
 
 
+///Text alignment values for set_alignment
+///Left alignment (default)
+pub const ALIGN_LEFT: u8 = 0;
+///Center alignment
+pub const ALIGN_CENTER: u8 = 1;
+///Right alignment
+pub const ALIGN_RIGHT: u8 = 2;
+
+
+///Font selection values for set_font
+///Font A (default, larger)
+pub const FONT_A: u8 = 0;
+///Font B (smaller)
+pub const FONT_B: u8 = 1;
+
+
+///Barcode HRI (Human Readable Interpretation) position values
+///Do not print HRI characters (default)
+pub const HRI_NONE: u8 = 0;
+///Print HRI characters above the barcode
+pub const HRI_ABOVE: u8 = 1;
+///Print HRI characters below the barcode
+pub const HRI_BELOW: u8 = 2;
+///Print HRI characters both above and below the barcode
+pub const HRI_ABOVE_BELOW: u8 = 3;
+
+
+///90-degree clockwise rotation values for set_rotation
+///No rotation (default)
+pub const ROTATION_OFF: u8 = 0;
+///90-degree clockwise rotation
+pub const ROTATION_90: u8 = 1;
+
+
 ///Different barcode types
 pub const UPC_A: u8 = 0x00;
 pub const UPC_E: u8 = 0x01;
