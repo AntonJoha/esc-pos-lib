@@ -264,13 +264,13 @@ impl Printer {
         self.message.push(lines);
     }
 
-    ///Call this to print and feed n lines.
+    ///Prints and feeds n lines.
     ///This is an explicit ESC/POS-named alias for feed().
     pub fn print_and_feed_lines(&mut self, lines: u8) {
         self.feed(lines);
     }
 
-    ///Call this to print and reverse feed n lines.
+    ///Prints and reverse feeds n lines.
     ///Uses the ESC e command.
     pub fn print_and_reverse_feed_lines(&mut self, lines: u8) {
         self.message.push(constants::ESC);
@@ -278,7 +278,7 @@ impl Printer {
         self.message.push(lines);
     }
 
-    ///Call this to print and feed paper by n dots.
+    ///Prints and feeds paper by n dots.
     ///Uses the ESC J command.
     pub fn print_and_feed_paper(&mut self, dots: u8) {
         self.message.push(constants::ESC);
