@@ -265,7 +265,7 @@ impl Printer {
     }
 
     ///Call this to print and feed n lines.
-    ///This is equivalent to feed().
+    ///This is an explicit ESC/POS-named alias for feed().
     pub fn print_and_feed_lines(&mut self, lines: u8) {
         self.feed(lines);
     }

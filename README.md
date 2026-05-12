@@ -7,7 +7,7 @@ Test image for the image library is from [here](https://unsplash.com/photos/VQol
 Free to use with the unsplash license.
 Thanks [Taraqur Rahman](https://unsplash.com/@tqrahman) for the picture. 
 
-## Failed implementations status (draft)
+## Command implementation status (draft)
 
 - Implemented:
   - Select the print density (`Printer::select_print_density`, draft `GS ( K fn=49`)
