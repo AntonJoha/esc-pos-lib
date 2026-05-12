@@ -115,6 +115,54 @@ fn test_feed() {
 }
 
 #[test]
+fn test_print_and_feed_lines() {
+    let mut p = printer::Printer::new();
+    p.print_and_feed_lines(3);
+    let expected = [init_bytes(), vec![constants::ESC, 0x64, 3]].concat();
+    assert_eq!(p.get_bytes(), expected.as_slice());
+}
+
+#[test]
+fn test_print_and_reverse_feed_lines() {
+    let mut p = printer::Printer::new();
+    p.print_and_reverse_feed_lines(4);
+    let expected = [init_bytes(), vec![constants::ESC, 0x65, 4]].concat();
+    assert_eq!(p.get_bytes(), expected.as_slice());
+}
+
+#[test]
+fn test_print_and_feed_paper() {
+    let mut p = printer::Printer::new();
+    p.print_and_feed_paper(12);
+    let expected = [init_bytes(), vec![constants::ESC, 0x4A, 12]].concat();
+    assert_eq!(p.get_bytes(), expected.as_slice());
+}
+
+#[test]
+fn test_select_print_density() {
+    let mut p = printer::Printer::new();
+    p.select_print_density(0x02);
+    let expected = [
+        init_bytes(),
+        vec![constants::GS, 0x28, 0x4B, 0x02, 0x00, 0x31, 0x02],
+    ]
+    .concat();
+    assert_eq!(p.get_bytes(), expected.as_slice());
+}
+
+#[test]
+fn test_select_print_speed() {
+    let mut p = printer::Printer::new();
+    p.select_print_speed(0x03);
+    let expected = [
+        init_bytes(),
+        vec![constants::GS, 0x28, 0x4B, 0x02, 0x00, 0x32, 0x03],
+    ]
+    .concat();
+    assert_eq!(p.get_bytes(), expected.as_slice());
+}
+
+#[test]
 fn test_set_barcode_hri_position_below() {
     let mut p = printer::Printer::new();
     p.set_barcode_hri_position(constants::HRI_BELOW);
