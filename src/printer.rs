@@ -264,6 +264,50 @@ impl Printer {
         self.message.push(lines);
     }
 
+    ///Call this to print and feed n lines.
+    ///This is equivalent to feed().
+    pub fn print_and_feed_lines(&mut self, lines: u8) {
+        self.feed(lines);
+    }
+
+    ///Call this to print and reverse feed n lines.
+    ///Uses the ESC e command.
+    pub fn print_and_reverse_feed_lines(&mut self, lines: u8) {
+        self.message.push(constants::ESC);
+        self.message.push(0x65);
+        self.message.push(lines);
+    }
+
+    ///Call this to print and feed paper by n dots.
+    ///Uses the ESC J command.
+    pub fn print_and_feed_paper(&mut self, dots: u8) {
+        self.message.push(constants::ESC);
+        self.message.push(0x4A);
+        self.message.push(dots);
+    }
+
+    fn _set_print_control_method(&mut self, function: u8, value: u8) {
+        self.message.push(constants::GS);
+        self.message.push(0x28);
+        self.message.push(0x4B);
+        self.message.push(0x02);
+        self.message.push(0x00);
+        self.message.push(function);
+        self.message.push(value);
+    }
+
+    ///Draft implementation for selecting print density.
+    ///Uses GS ( K function 49.
+    pub fn select_print_density(&mut self, density: u8) {
+        self._set_print_control_method(0x31, density);
+    }
+
+    ///Draft implementation for selecting print speed.
+    ///Uses GS ( K function 50.
+    pub fn select_print_speed(&mut self, speed: u8) {
+        self._set_print_control_method(0x32, speed);
+    }
+
     ///Call this to set the position of the HRI (Human Readable Interpretation) characters
     ///relative to the barcode.
     ///Use constants::HRI_NONE, HRI_ABOVE, HRI_BELOW, or HRI_ABOVE_BELOW.
@@ -372,4 +416,3 @@ impl Printer {
     }
 
 }
-
